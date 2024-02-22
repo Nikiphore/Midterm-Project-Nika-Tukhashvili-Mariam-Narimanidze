@@ -167,7 +167,77 @@ void hangman()
 void translator()
 {
     Console.WriteLine("choose number: \n1 - from georgian to english\n2 - from english to georgian\n3 - from georgian to russian\n4 - from russian to georgian");
-    string temp = Console.ReadLine();
+    string temp;
+    while (true)
+    {
+        temp = Console.ReadLine();
+        if (temp == "1" ||  temp == "2" || temp == "3" || temp == "4")
+        {
+            break;
+        }
+        else
+        {
+            Console.WriteLine("enter correct number!");
+        }
+    }
+
+    string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+    switch (temp)
+    {
+        case "1":
+            path += @"\geotoeng.txt";
+            break;
+        case "2":
+            path += @"\engtogeo.txt";
+            break;
+        case "3":
+            path += @"\geotorus.txt";
+            break;
+        case "4":
+            path += @"\rustogeo.txt";
+            break;
+    }
+
+    Console.WriteLine("enter word or phrase to translate: ");
+    string text = Console.ReadLine();
+    bool notranslation=true;
+    try
+    {
+        using (StreamReader sr = new StreamReader(path))
+        {
+            string line;
+            while((line = sr.ReadLine()) != null)
+            {
+                if (text == line.Split("-")[0])
+                {
+                    Console.WriteLine($"translated text: {line.Split("-")[1]}");
+                    notranslation = false;
+                    break;
+                }
+            }
+            //if (sr.ReadLine == null)
+            //{
+            //    notranslation = true;
+                
+            //}
+        }
+        if (notranslation)
+        {
+            Console.WriteLine($"{text} not found in dictionary. enter translation: ");
+            string translation = Console.ReadLine();
+            using (StreamWriter sw = new StreamWriter(path,true))
+            {
+                sw.WriteLine($"{text}-{translation}");
+            }
+            Console.WriteLine("translation added!");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+
 }
 
 translator();
