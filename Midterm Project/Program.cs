@@ -7,7 +7,7 @@ using System.Text;
 void Calc()
 {
 
-    int a,b;
+    int a, b;
     string temp;
 
     while (true)
@@ -52,7 +52,7 @@ void Calc()
                 Console.WriteLine($"{a}*{b}={a * b}");
                 break;
             case "/":
-                if (b== 0)
+                if (b == 0)
                 {
                     throw new DivideByZeroException("Can't divide by 0!");
                 }
@@ -61,14 +61,15 @@ void Calc()
 
         }
     }
-    catch(DivideByZeroException dv){
-        Console.WriteLine(dv.Message); 
+    catch (DivideByZeroException dv)
+    {
+        Console.WriteLine(dv.Message);
     }
     catch (Exception ex)
     {
         Console.WriteLine(ex.Message);
     }
-    
+
 
 }
 
@@ -83,8 +84,8 @@ void Calc()
 void GuessNumber()
 {
     Console.WriteLine("computer picked a number between 0 and 100");
-    int n = new Random().Next(0,101);
-    int a=-1, counter=0;
+    int n = new Random().Next(0, 101);
+    int a = -1, counter = 0;
 
     do
     {
@@ -103,10 +104,10 @@ void GuessNumber()
         {
             Console.WriteLine("computer's number is higher");
         }
-        
+
     }
     while (n != a);
-    
+
 }
 
 //GuessNumber();
@@ -120,30 +121,30 @@ void GuessNumber()
 void Hangman()
 {
     string[] strings = { "computer", "laptop", "water", "dog", "cat", "plant", "guitar", "program", "child", "book" };
-    string word = strings[new Random().Next(0,strings.Length)];
+    string word = strings[new Random().Next(0, strings.Length)];
     Console.Write("enter maximum number of attempts: ");
     int attempts = int.Parse(Console.ReadLine());
     string answer = "";
-    for (int i=0; i<word.Length; i++)
+    for (int i = 0; i < word.Length; i++)
     {
         answer += "_ ";
     }
     Console.WriteLine(answer);
 
-    while(attempts > 0) 
+    while (attempts > 0)
     {
         attempts--;
         Console.WriteLine("enter letter: ");
         char ch = char.Parse(Console.ReadLine());
-        
+
         if (word.Contains(ch))
         {
             char[] charArray = answer.ToCharArray();
-            for (int j=0; j<word.Length; j++)
+            for (int j = 0; j < word.Length; j++)
             {
                 if (word[j] == ch)
                 {
-                    charArray[2*j] = ch;
+                    charArray[2 * j] = ch;
                 }
             }
             answer = new string(charArray);
@@ -213,7 +214,7 @@ void Translator()
         }
     }
 
-    
+
     string from = "", to = "";
 
     while (true)
@@ -221,7 +222,7 @@ void Translator()
         Console.WriteLine("choose number: \n1 - from georgian to english\n2 - from english to georgian\n3 - from georgian to russian\n4 - from russian to georgian\n5 - exit program");
         path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string temp;
-        
+
 
         while (true)
         {
@@ -260,9 +261,9 @@ void Translator()
 
             if (endwhile) { break; }
 
-            
+
         }
-        
+
 
         Console.WriteLine("enter word or phrase to translate: ");
         string text = Console.ReadLine();
@@ -305,7 +306,7 @@ void Translator()
             Console.WriteLine(ex.Message);
         }
     }
-    
+
 
 }
 
@@ -322,13 +323,13 @@ void Atm()
     string dirPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\users";
     DirectoryInfo dir = new DirectoryInfo(dirPath);
     dir.Create();
-    
-    while(true)
+
+    while (true)
     {
         Console.WriteLine("1 - register user\n2 - check balanse\n3 - deposit money\n4 - withdraw money\n5 - exit");
         string temp = Console.ReadLine();
         if (temp == "5") { break; }
-        
+
         if (temp == "1")
         {
             Console.Write("enter username: ");
@@ -390,7 +391,7 @@ void Atm()
                 continue;
             }
 
-            int newmoney, oldmoney=0;
+            int newmoney, oldmoney = 0;
             string line;
             using (StreamReader sr = new StreamReader(path))
             {
@@ -415,7 +416,7 @@ void Atm()
                     newmoney += oldmoney;
                     break;
                 }
-                catch(OverflowException oe)
+                catch (OverflowException oe)
                 {
                     Console.Write("enter lower number: ");
                 }
@@ -458,12 +459,12 @@ void Atm()
                 try
                 {
                     newmoney = int.Parse(Console.ReadLine());
-                    if ( newmoney < 0)
+                    if (newmoney < 0)
                     {
                         Console.Write("enter positive number: ");
                         continue;
                     }
-                    if ( newmoney > oldmoney)
+                    if (newmoney > oldmoney)
                     {
                         Console.Write("not enough money!\nenter lower number: ");
                         continue;
@@ -500,6 +501,7 @@ void Atm()
 
 
 #region bookmanager
+
 /*
 BookManager bookManager = new BookManager();
 //bookManager.Menu();
@@ -515,5 +517,23 @@ bookManager.SearchBookByAuthor("dato turashvili");
 
 #endregion
 
+#region studentmanager
+
+/*
+StudentManager studentManager = new StudentManager();
+//studentManager.Menu();
+
+studentManager.AddStudent("mariami", 15, 'A');
+studentManager.AddStudent("nika", 17, 'B');
+studentManager.AddStudent("elene", 20, 'D');
+studentManager.AddStudent("nugzari", 10, 'F');
+studentManager.ShowStudents();
+studentManager.SearchStudentByRollNumber(17);
+studentManager.SearchStudentByRollNumber(65);
+studentManager.UpdateGrade(20, 'C');
+studentManager.ShowStudents();
+*/
 
 
+
+#endregion

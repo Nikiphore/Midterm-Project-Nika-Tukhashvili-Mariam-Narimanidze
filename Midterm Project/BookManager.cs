@@ -1,7 +1,4 @@
-﻿using System.Threading.Channels;
-using static System.Reflection.Metadata.BlobBuilder;
-
-namespace Midterm_Project
+﻿namespace Midterm_Project
 {
     internal class BookManager
     {
@@ -50,7 +47,7 @@ namespace Midterm_Project
                 Console.WriteLine("book not found.");
             }
         }
-        
+
         public void SearchBookByAuthor(string author)
         {
             bool exists = false;
@@ -72,11 +69,11 @@ namespace Midterm_Project
             }
         }
 
-        public bool Exists(string title, string author, int year) 
+        public bool Exists(string title, string author, int year)
         {
             //var temp = _books.Find(obj => obj.Title == title && obj.Author == author && obj.ReleaseYear == year);
-            //return temp!=null;
-            return _books.Contains(new Book(title, author, year));
+            return _books.Find(obj => obj.Title == title && obj.Author == author && obj.ReleaseYear == year) != null;
+            //return _books.Contains(new Book(title, author, year));
         }
 
         public void Menu()
@@ -92,7 +89,7 @@ namespace Midterm_Project
                     Console.Write("enter book author: ");
                     string author = Console.ReadLine();
                     Console.Write("enter book release year: ");
-                    int year; 
+                    int year;
                     while (!int.TryParse(Console.ReadLine(), out year) || year > DateTime.Now.Year)
                     {
                         Console.Write("enter correct release year: ");
@@ -105,7 +102,7 @@ namespace Midterm_Project
                     {
                         Console.WriteLine("book already exists!");
                     }
-                    
+
                 }
                 else if (temp == "2")
                 {

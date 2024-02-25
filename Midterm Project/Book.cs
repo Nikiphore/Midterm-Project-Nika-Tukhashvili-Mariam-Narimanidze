@@ -17,7 +17,7 @@ namespace Midterm_Project
             Author = "N/A";
         }
 
-        public Book (string title, string author, int releaseYear)
+        public Book(string title, string author, int releaseYear)
         {
             Title = title;
             Author = author;
