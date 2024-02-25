@@ -1,7 +1,9 @@
 ﻿
+using Midterm_Project;
 using System.Data;
 using System.Text;
 
+#region Calculator function
 void Calc()
 {
 
@@ -73,8 +75,11 @@ void Calc()
 //Calc();
 
 
+#endregion
 
 
+
+#region guess number game
 void GuessNumber()
 {
     Console.WriteLine("computer picked a number between 0 and 100");
@@ -107,8 +112,11 @@ void GuessNumber()
 //GuessNumber();
 
 
+#endregion
 
 
+
+#region hangman game
 void Hangman()
 {
     string[] strings = { "computer", "laptop", "water", "dog", "cat", "plant", "guitar", "program", "child", "book" };
@@ -162,8 +170,11 @@ void Hangman()
 //Hangman();
 
 
+#endregion
 
 
+
+#region translator
 void Translator()
 {
     string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\geotoeng.txt";
@@ -301,8 +312,11 @@ void Translator()
 //Translator();
 
 
+#endregion
 
 
+
+#region ATM
 void Atm()
 {
     string dirPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\users";
@@ -480,6 +494,26 @@ void Atm()
 
 //Atm();
 
+
+
+#endregion
+
+
+#region bookmanager
+/*
+BookManager bookManager = new BookManager();
+//bookManager.Menu();
+bookManager.AddBook("tyeebis mefe", "dato turashvili", 2005);
+bookManager.AddBook("frankenshteini", "meri sheli", 1846);
+bookManager.AddBook("jinsebis taoba", "dato turashvili", 2001);
+bookManager.AddBook("davit agmashenebeli", "konstantine gamsaxurdia", 1971);
+
+bookManager.ShowBooks();
+bookManager.SearchBookByTitle("frankenshteini");
+bookManager.SearchBookByAuthor("dato turashvili");
+*/
+
+#endregion
 
 
 
