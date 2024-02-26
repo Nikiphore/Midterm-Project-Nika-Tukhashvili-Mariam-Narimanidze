@@ -1,60 +1,54 @@
 ﻿
 using Midterm_Project;
 using System.Data;
+using System.Diagnostics;
 using System.Text;
 
 #region Calculator function
-void Calc()
+void Calc() //ვქმნით კალკულატორის ფუნქციას
 {
 
     int a, b;
-    string temp;
+    char temp;
 
-    while (true)
+    Console.Write("enter first number: "); //შემოგვყავს პირველი რიცხვი
+    while (!int.TryParse(Console.ReadLine(), out a)) //ვამოწმებთ int ტიპის შემოდის თუ არა, თუ კი ვწერთ ცვლად a-ში
     {
-        Console.Write("enter first number: ");
-        if (int.TryParse(Console.ReadLine(), out a))
-        {
-            break;
-        }
-        Console.WriteLine("enter valid number!");
-    }
-    while (true)
-    {
-        Console.Write("enter second number: ");
-        if (int.TryParse(Console.ReadLine(), out b))
-            break;
-        Console.WriteLine("enter valid number!");
-    }
-    while (true)
-    {
-        Console.Write("enter operator [+,-,*,/]: ");
-        temp = Console.ReadLine();
-        if (temp == "+" || temp == "-" || temp == "*" || temp == "/")
-            break;
-        Console.WriteLine("enter valid operator!");
+        Console.Write("enter valid number: ");
     }
 
 
+    Console.Write("enter second number: "); //შემოგვყავს პირველი რიცხვი
+    while (!int.TryParse(Console.ReadLine(), out b)) //ვამოწმებთ int ტიპის შემოდის თუ არა, თუ კი ვწერთ ცვლად b-ში
+    {
+        Console.Write("enter valid number: ");
+    }
+
+
+    Console.Write("enter operator [+,-,*,/]: "); //ვირჩევთ მოქმედებას
+    while (!char.TryParse(Console.ReadLine().ToUpper(), out temp) || !(temp == '+' || temp == '-' || temp == '*' || temp == '/')) //ვამოწმებთ მითითებული ოპერატორებიდან თუ შეგვყავს სწორად
+    {
+        Console.Write("enter valid operator: ");
+    }
 
 
     try
     {
-        switch (temp)
+        switch (temp) //ვასრულებთ მოქმედებებს
         {
-            case "+":
+            case '+':
                 Console.WriteLine($"{a}+{b}={a + b}");
                 break;
-            case "-":
+            case '-':
                 Console.WriteLine($"{a}-{b}={a - b}");
                 break;
-            case "*":
+            case '*':
                 Console.WriteLine($"{a}*{b}={a * b}");
                 break;
-            case "/":
-                if (b == 0)
+            case '/':
+                if (b == 0) //ვამოწმებთ 0-ზე ხომ არ ვყოფთ
                 {
-                    throw new DivideByZeroException("Can't divide by 0!");
+                    throw new DivideByZeroException("Can't divide by 0!"); //გადავცემთ ახალ exception-ს
                 }
                 Console.WriteLine($"{a}/{b}={(double)a / b}");
                 break;
@@ -62,10 +56,10 @@ void Calc()
         }
     }
     catch (DivideByZeroException dv)
-    {
+    { //თუ ნოლზე გაყოფა მოხდება, აღმოაჩენს
         Console.WriteLine(dv.Message);
     }
-    catch (Exception ex)
+    catch (Exception ex) //თუ სხვა რაიმე შეცდომა მოხდება, აღმოაჩენს
     {
         Console.WriteLine(ex.Message);
     }
@@ -73,7 +67,7 @@ void Calc()
 
 }
 
-//Calc();
+//Calc(); //ფუნქციის გაშვება
 
 
 #endregion
@@ -84,29 +78,32 @@ void Calc()
 void GuessNumber()
 {
     Console.WriteLine("computer picked a number between 0 and 100");
-    int n = new Random().Next(0, 101);
+    int n = new Random().Next(0, 101); //ვიღებთ შემთხვევით რიცხვს და ვწერთ ცვლად n-ში
     int a = -1, counter = 0;
 
-    do
+    do //ეშვება while-მდე
     {
         Console.Write("guess the number: ");
-        a = int.Parse(Console.ReadLine());
-        counter++;
-        if (a == n)
+        while (!int.TryParse(Console.ReadLine(), out a)) //მომხმარებელს შემოჰყავს რიცხვი, რომელიც უნდა იყოს ინტ
+        {
+            Console.Write("enter correct number: ");
+        }
+        counter++; //ვითვლით მცდელობების რაოდენობას
+        if (a == n) //თუ მომხამერებელი გამოიცნობს ჩაფიქრებულ რიცხვს
         {
             Console.WriteLine($"congratulations, you guessed the number in {counter} attempts!");
         }
-        else if (a > n)
+        else if (a > n) //თუ მომხმარებლის მიერ შეყვანილი რიცხვი მეტია ჩაფიქრებულ რიცხვზე
         {
             Console.WriteLine("computer's number is lower.");
         }
-        else
+        else //თუ მომხმარებლის მიერ შეყვანილი რიცხვი ნაკლებია ჩაფიქრებულ რიცხვზე
         {
             Console.WriteLine("computer's number is higher");
         }
 
     }
-    while (n != a);
+    while (n != a); // მანამდე ვუშვებთ სანამ მომხმარებელი არ გამოიცნობს
 
 }
 
@@ -120,52 +117,63 @@ void GuessNumber()
 #region hangman game
 void Hangman()
 {
-    string[] strings = { "computer", "laptop", "water", "dog", "cat", "plant", "guitar", "program", "child", "book" };
-    string word = strings[new Random().Next(0, strings.Length)];
+    string[] strings = { "computer", "laptop", "water", "dog", "cat", "plant", "guitar", "program", "child", "book" }; //ვქმნით სიტყვების მასივს თამაშისთვის
+    string word = strings[new Random().Next(0, strings.Length)]; //ვირჩევთ მასივიდან შემთხვევით სიტყვას თამაშის დასაწყებად
     Console.Write("enter maximum number of attempts: ");
-    int attempts = int.Parse(Console.ReadLine());
+    int attempts; 
+    //მომხმარებელი თავად ირჩევს წინასწარ თუ რამდენი მცდელობა ექნება
+    while (!int.TryParse(Console.ReadLine(), out attempts) || attempts <= 0) //უნდა იყოს ინტ და დადებითი რიცხვი
+    {
+        Console.Write("enter correct number: ");
+    }
+
     string answer = "";
     for (int i = 0; i < word.Length; i++)
     {
-        answer += "_ ";
+        answer += "_ ";  //შერჩეულ სიტყვას ვმალავთ
     }
     Console.WriteLine(answer);
 
-    while (attempts > 0)
+    while (attempts > 0) //მანამდე გრძელდება თამაში სანამ ცდების რაოდენობა არ ამოიწურება
     {
-        attempts--;
-        Console.WriteLine("enter letter: ");
-        char ch = char.Parse(Console.ReadLine());
-
-        if (word.Contains(ch))
+        Console.Write("enter letter: "); //სათითაოდ შემოაქვს მომხმარებელს ასოები
+        char ch;
+        while (!char.TryParse(Console.ReadLine().ToLower(), out ch)) //ვამოწმებთ ასო თუ სწორად შეჰყავს, უნდა იყოს ჩარი
         {
-            char[] charArray = answer.ToCharArray();
-            for (int j = 0; j < word.Length; j++)
+            Console.Write("enter correct letter: ");
+        }
+
+
+        if (word.Contains(ch)) //ვამოწმებთ ჩაფიქრებულ სიტყვაში არის თუ არა ეს ასო
+        {
+            char[] charArray = answer.ToCharArray(); //ვქმნით ახალ მასივს, სადაც სტრინგის თითოეული char(სიმბოლო) იქნება შენახული რათა მერე გამოვაჩინოთ ის ასო რომელიც გამოიცნო
+            for (int j = 0; j < word.Length; j++) //ციკლს ვუშვებთ რათა შევამოწმოთ გამოცნობილი ასო ერთზე მეტჯერ ხომ არ შეგვხვდა
             {
                 if (word[j] == ch)
                 {
-                    charArray[2 * j] = ch;
+                    charArray[2 * j] = ch; //ვითვალისწინებთ რომ დეფისების გარდა გვიწერია სფეისები(გამოტოვებული ადგილები)
                 }
             }
-            answer = new string(charArray);
+            answer = new string(charArray); //ისევ ვამთელებთ სიმბოლოებისგან სტრინგს
 
-            if (!answer.Contains("_"))
+            if (!answer.Contains("_")) //ვამოწმებთ სიტყვაში ხომ არ დარჩა გამოუცნობი ასო
             {
                 Console.WriteLine("congratulations, you guessed the word!");
                 Console.WriteLine(answer);
                 break;
             }
 
-            Console.WriteLine($"you guessed the letter. {attempts} attempts left.");
+            Console.WriteLine($"you guessed the letter. {attempts} attempts left."); //ვამცნობთ ყოველი ასოს სწორად გამოცნობას და დარჩენილი მცდელობების რაოდენობას
             Console.WriteLine(answer);
         }
         else
         {
-            Console.WriteLine($"can't guess the letter. {attempts} attempts left.");
+            attempts--;
+            Console.WriteLine($"can't guess the letter. {attempts} attempts left."); //ვამცნობთ რომ ვერ გამოიცნო და რამდენი მცდელობა დარჩა
         }
     }
     if (attempts == 0)
-        Console.WriteLine("you failed!");
+        Console.WriteLine("you failed!"); //წააგო
 }
 
 //Hangman();
@@ -177,16 +185,16 @@ void Hangman()
 
 #region translator
 void Translator()
-{
-    string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\geotoeng.txt";
-    using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+{   //ქართულიდან ინგლისურზე
+    string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\geotoeng.txt"; //ცვლადში ვინახავთ ფაილის გზას(path)
+    using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write)) //ვიყენებთ FileStream, ვქმნით ფაილს
     {
-        using (StreamWriter sw = new StreamWriter(fs))
+        using (StreamWriter sw = new StreamWriter(fs)) //ვიყენებთ StreamWriter(ვქმნით მის ობიექტს)
         {
-            sw.WriteLine("sarke-mirror\r\nwigni-book\r\nmagida-table\r\nqalaqi-city\r\nchanta-bag\r\nskami-chair\r\n");
+            sw.WriteLine("sarke-mirror\r\nwigni-book\r\nmagida-table\r\nqalaqi-city\r\nchanta-bag\r\nskami-chair\r\n"); //ფაილში ვწერთ მოცემულ ტექსტს
         }
     }
-
+    //ინგლისურიდან ქართულზე
     path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\engtogeo.txt";
     using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
     {
@@ -195,7 +203,7 @@ void Translator()
             sw.WriteLine("mirror-sarke\r\nbook-wigni\r\ntable-magida\r\ncity-qalaqi\r\nbag-chanta\r\nchair-skami");
         }
     }
-
+    //ქართულიდან რუსულზე
     path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\geotorus.txt";
     using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
     {
@@ -204,7 +212,7 @@ void Translator()
             sw.WriteLine("sarke-zerkalo\r\nwigni-kniga\r\nmagida-stol\r\nqalaqi-gorod\r\nchanta-sumka");
         }
     }
-
+    //რუსულიდან ქართულზე
     path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\rustogeo.txt";
     using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
     {
@@ -219,18 +227,18 @@ void Translator()
 
     while (true)
     {
-        Console.WriteLine("choose number: \n1 - from georgian to english\n2 - from english to georgian\n3 - from georgian to russian\n4 - from russian to georgian\n5 - exit program");
+        Console.WriteLine("choose number: \n1 - from georgian to english\n2 - from english to georgian\n3 - from georgian to russian\n4 - from russian to georgian\n5 - exit program"); //მომხმარებელმა უნდა აირჩიოს რომელი ლექსიკონი უნდა
         path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string temp;
 
 
         while (true)
         {
-            temp = Console.ReadLine();
+            temp = Console.ReadLine(); //მომხმარებელი ირჩევს ლექსიკონს
             bool endwhile = true;
 
             switch (temp)
-            {
+            {   //ვინახავთ ადგილმდებარეობას არჩეული ლექსიკონის
                 case "1":
                     path += @"\geotoeng.txt";
                     from = "geo";
@@ -266,42 +274,42 @@ void Translator()
 
 
         Console.WriteLine("enter word or phrase to translate: ");
-        string text = Console.ReadLine();
+        string text = Console.ReadLine();//მომხმარებელს შეჰყავს სიტყვა რომლის თარგმანიც უნდა
         bool notranslation = true;
         try
         {
             using (StreamReader sr = new StreamReader(path))
             {
                 string line;
-                while ((line = sr.ReadLine()) != null)
+                while ((line = sr.ReadLine()) != null) //ვამოწმებთ ფაილში ყველა ხაზს სანამ ცარიელი არ შეხვდება
                 {
-                    if (text == line.Split("-")[0])
+                    if (text == line.Split("-")[0]) //ვამოწმებთ მომხმარებლის მიერ შეყვანილი სიტყვა არის თუ არა ლექსიკონში
                     {
-                        Console.WriteLine($"translated text: {line.Split("-")[1]}");
+                        Console.WriteLine($"translated text: {line.Split("-")[1]}"); //გამოგვაქვს გადათარგმნილი სიტყვა
                         notranslation = false;
                         break;
                     }
                 }
             }
-            if (notranslation)
+            if (notranslation) //თუ თარგმანი ვერ ვიპოვეთ
             {
                 Console.WriteLine($"{text} not found in dictionary. enter translation: ");
                 string translation = Console.ReadLine();
                 using (StreamWriter sw = new StreamWriter(path, true))
                 {
-                    sw.WriteLine($"{text}-{translation}");
+                    sw.WriteLine($"{text}-{translation}"); //მომხმარებელი თავად ამატებს სიტყვის თარგმანს
                 }
 
                 path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $@"\{to}to{from}.txt";
                 using (StreamWriter sw = new StreamWriter(path, true))
                 {
-                    sw.WriteLine($"{translation}-{text}");
+                    sw.WriteLine($"{translation}-{text}");// ასევე ამ სიტყვას ვამატებთ მეორე ლექსიკონში
                 }
                 Console.WriteLine("translation added!");
 
             }
         }
-        catch (Exception ex)
+        catch (Exception ex) //თუ რაიმე შეცდომა მოხდა catch დაიჭერს
         {
             Console.WriteLine(ex.Message);
         }
@@ -322,45 +330,44 @@ void Atm()
 {
     string dirPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\users";
     DirectoryInfo dir = new DirectoryInfo(dirPath);
-    dir.Create();
+    dir.Create(); //ვქმნით ფოლდერს
 
     while (true)
     {
         Console.WriteLine("1 - register user\n2 - check balanse\n3 - deposit money\n4 - withdraw money\n5 - exit");
-        string temp = Console.ReadLine();
+        string temp = Console.ReadLine(); //მომხმარებელი ირჩევს მოქმედებას
         if (temp == "5") { break; }
 
-        if (temp == "1")
+        if (temp == "1") //ვარეგისტრირებთ მომხმარებელს
         {
             Console.Write("enter username: ");
             string username = Console.ReadLine();
             string path = dirPath + @$"\{username}.txt";
             FileInfo fileInfo = new FileInfo(path);
-            if (fileInfo.Exists)
+            if (fileInfo.Exists) //სანამ დავარეგისტრირებთ ვამოწმებთ უკვე ხომ არ არსებობს user
             {
                 Console.WriteLine($"user {username} already exists!");
             }
             else
             {
-                Random rand = new Random();
-                int balance = rand.Next(500, 10000);
-                //Console.Write("enter balance: ");
-                //int balance = int.Parse(Console.ReadLine());
-                using (StreamWriter sw = new StreamWriter(path))
+                //int balance = new Random().Next(500, 10000);
+                Console.Write("enter balance: ");
+                int balance = int.Parse(Console.ReadLine());
+                using (StreamWriter sw = new StreamWriter(path)) //ვქმნით მისი სახელის ფაილს
                 {
-                    sw.WriteLine(balance);
+                    sw.WriteLine(balance); //ვუწერთ ბალანსს ფაილში
                 }
                 Console.WriteLine("user added!");
             }
 
         }
-        else if (temp == "2")
+        else if (temp == "2") //ვამოწმეთ ბალანსს
         {
             Console.Write("enter username: ");
             string username = Console.ReadLine();
             string path = dirPath + @$"\{username}.txt";
 
-            FileInfo fileInfo = new FileInfo(path);
+            FileInfo fileInfo = new FileInfo(path); //გადავცემთ ფაილის ადგილმდებარეობას
             if (!fileInfo.Exists)
             {
                 Console.WriteLine($"{username} doesn't exist!");
@@ -371,21 +378,21 @@ void Atm()
             int balance;
             using (StreamReader sr = new StreamReader(path))
             {
-                if ((line = sr.ReadLine()) != null)
+                if ((line = sr.ReadLine()) != null) //ვამოწმებთ ფაილი ცარიელი ხომ არაა
                 {
                     balance = int.Parse(line);
-                    Console.WriteLine($"balance: ${balance}");
+                    Console.WriteLine($"balance: ${balance}"); //გამოგვაქვს ბალანსი
                 }
             }
         }
-        else if (temp == "3")
+        else if (temp == "3") //თანხის შეტანა
         {
             Console.Write("enter username: ");
             string username = Console.ReadLine();
             string path = dirPath + @$"\{username}.txt";
 
             FileInfo fileInfo = new FileInfo(path);
-            if (!fileInfo.Exists)
+            if (!fileInfo.Exists) // თუ არ არსებობს მითითებული ექაუნთი
             {
                 Console.WriteLine($"{username} doesn't exist!");
                 continue;
@@ -395,9 +402,9 @@ void Atm()
             string line;
             using (StreamReader sr = new StreamReader(path))
             {
-                if ((line = sr.ReadLine()) != null)
+                if ((line = sr.ReadLine()) != null) //ვამოწმებთ ფაილი ცარიელი ხომ არაა
                 {
-                    oldmoney = int.Parse(line);
+                    oldmoney = int.Parse(line); //ვინახავთ ბალანსს ცვლადში
                 }
             }
 
@@ -405,18 +412,18 @@ void Atm()
             Console.Write("enter amount of money: ");
             while (true)
             {
-                try
+                try //ვითვალისწინებთ შეცდომებს
                 {
                     newmoney = int.Parse(Console.ReadLine());
-                    if (newmoney < 0)
+                    if (newmoney < 0) //არ შემოიტანოს უარყოფითი რიცხვი
                     {
                         Console.Write("enter positive number: ");
                         continue;
                     }
-                    newmoney += oldmoney;
+                    newmoney += oldmoney; // ბალანსი შეავსო მითითებული თანხით
                     break;
                 }
-                catch (OverflowException oe)
+                catch (OverflowException oe) //ვითვალისწინებთ რომ შეყვანილი რიცხვი არ გასცდეს int-ს
                 {
                     Console.Write("enter lower number: ");
                 }
@@ -425,18 +432,18 @@ void Atm()
                     Console.Write("enter correct number: ");
                 }
             }
-            File.WriteAllText(path, newmoney.ToString());
+            File.WriteAllText(path, newmoney.ToString()); //ფაილში ჩაიწერა ახალი ბალანსი
             Console.WriteLine($"total amount: {newmoney}");
 
         }
-        else if (temp == "4")
+        else if (temp == "4")//თანხის გატანა
         {
             Console.Write("enter username: ");
             string username = Console.ReadLine();
             string path = dirPath + @$"\{username}.txt";
 
             FileInfo fileInfo = new FileInfo(path);
-            if (!fileInfo.Exists)
+            if (!fileInfo.Exists) // თუ არ არსებობს მითითებული ექაუნთი
             {
                 Console.WriteLine($"{username} doesn't exist!");
                 continue;
@@ -446,9 +453,9 @@ void Atm()
             string line;
             using (StreamReader sr = new StreamReader(path))
             {
-                if ((line = sr.ReadLine()) != null)
+                if ((line = sr.ReadLine()) != null) //ვამოწმებთ ფაილი ცარიელი ხომ არაა
                 {
-                    oldmoney = int.Parse(line);
+                    oldmoney = int.Parse(line); //ვინახავთ ბალანსს ცვლადში
                 }
             }
 
@@ -456,10 +463,10 @@ void Atm()
             Console.Write("enter amount of money: ");
             while (true)
             {
-                try
+                try //ვითვალისწინებთ შეცდომებს
                 {
                     newmoney = int.Parse(Console.ReadLine());
-                    if (newmoney < 0)
+                    if (newmoney < 0) //არ შემოიტანოს უარყოფითი რიცხვი
                     {
                         Console.Write("enter positive number: ");
                         continue;
@@ -469,10 +476,10 @@ void Atm()
                         Console.Write("not enough money!\nenter lower number: ");
                         continue;
                     }
-                    newmoney = oldmoney - newmoney;
+                    newmoney = oldmoney - newmoney; //ბალანსს ჩამოაკლდა მითითებული თანხა
                     break;
                 }
-                catch (OverflowException oe)
+                catch (OverflowException oe) //ვითვალისწინებთ რომ შეყვანილი რიცხვი არ გასცდეს int-ს
                 {
                     Console.Write("enter lower number: ");
                 }
@@ -481,7 +488,7 @@ void Atm()
                     Console.Write("enter correct number: ");
                 }
             }
-            File.WriteAllText(path, newmoney.ToString());
+            File.WriteAllText(path, newmoney.ToString()); //ფაილში ჩაიწერა ახალი ბალანსი
             Console.WriteLine($"total amount: {newmoney}");
         }
         else
@@ -503,14 +510,16 @@ void Atm()
 #region bookmanager
 
 /*
-BookManager bookManager = new BookManager();
-//bookManager.Menu();
-bookManager.AddBook("tyeebis mefe", "dato turashvili", 2005);
+BookManager bookManager = new BookManager(); //ვქმნით ობიექტს
+//bookManager.Menu(); //ვიძახებთ მენიუს
+//ვამატებთ წიგნებს
+bookManager.AddBook("tyeebis mefe", "dato turashvili", 2005); 
 bookManager.AddBook("frankenshteini", "meri sheli", 1846);
 bookManager.AddBook("jinsebis taoba", "dato turashvili", 2001);
 bookManager.AddBook("davit agmashenebeli", "konstantine gamsaxurdia", 1971);
 
-bookManager.ShowBooks();
+bookManager.ShowBooks(); //გამოგვაქვს ყველა წიგნი
+//ვეძებთ წიგნებს
 bookManager.SearchBookByTitle("frankenshteini");
 bookManager.SearchBookByAuthor("dato turashvili");
 */
@@ -520,18 +529,19 @@ bookManager.SearchBookByAuthor("dato turashvili");
 #region studentmanager
 
 /*
-StudentManager studentManager = new StudentManager();
-//studentManager.Menu();
-
+StudentManager studentManager = new StudentManager(); //ვქმნით ობიექტს
+//studentManager.Menu(); //ვიძახებთ მენიუს
+//ვამატებთ სტუდენტებს
 studentManager.AddStudent("mariami", 15, 'A');
 studentManager.AddStudent("nika", 17, 'B');
 studentManager.AddStudent("elene", 20, 'D');
 studentManager.AddStudent("nugzari", 10, 'F');
-studentManager.ShowStudents();
+studentManager.ShowStudents(); //გამოგვაქვს სტუდენტების სია
+//ვეძებთ სტუდენტებს
 studentManager.SearchStudentByRollNumber(17);
 studentManager.SearchStudentByRollNumber(65);
-studentManager.UpdateGrade(20, 'C');
-studentManager.ShowStudents();
+studentManager.UpdateGrade(20, 'C'); //ვანახლებთ ქულას
+studentManager.ShowStudents(); //გამოგვაქვს სტუდენტების სია
 */
 
 
