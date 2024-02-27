@@ -79,7 +79,7 @@ void GuessNumber()
 {
     Console.WriteLine("computer picked a number between 0 and 100");
     int n = new Random().Next(0, 101); //ვიღებთ შემთხვევით რიცხვს და ვწერთ ცვლად n-ში
-    int a = -1, counter = 0;
+    int a, counter = 0;
 
     do //ეშვება while-მდე
     {
