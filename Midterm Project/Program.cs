@@ -191,18 +191,18 @@ void Translator()
     {
         using (StreamWriter sw = new StreamWriter(fs)) //ვიყენებთ StreamWriter(ვქმნით მის ობიექტს)
         {
-            sw.WriteLine("sarke-mirror\r\nwigni-book\r\nmagida-table\r\nqalaqi-city\r\nchanta-bag\r\nskami-chair\r\n"); //ფაილში ვწერთ მოცემულ ტექსტს
+            sw.WriteLine("sarke-mirror\r\nwigni-book\r\nmagida-table\r\nqalaqi-city\r\nchanta-bag\r\nskami-chair"); //ფაილში ვწერთ მოცემულ ტექსტს
         }
     }
-    //ინგლისურიდან ქართულზე
-    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\engtogeo.txt";
-    using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-    {
-        using (StreamWriter sw = new StreamWriter(fs))
-        {
-            sw.WriteLine("mirror-sarke\r\nbook-wigni\r\ntable-magida\r\ncity-qalaqi\r\nbag-chanta\r\nchair-skami");
-        }
-    }
+    ////ინგლისურიდან ქართულზე
+    //path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\engtogeo.txt";
+    //using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+    //{
+    //    using (StreamWriter sw = new StreamWriter(fs))
+    //    {
+    //        sw.WriteLine("mirror-sarke\r\nbook-wigni\r\ntable-magida\r\ncity-qalaqi\r\nbag-chanta\r\nchair-skami");
+    //    }
+    //}
     //ქართულიდან რუსულზე
     path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\geotorus.txt";
     using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
@@ -212,15 +212,15 @@ void Translator()
             sw.WriteLine("sarke-zerkalo\r\nwigni-kniga\r\nmagida-stol\r\nqalaqi-gorod\r\nchanta-sumka");
         }
     }
-    //რუსულიდან ქართულზე
-    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\rustogeo.txt";
-    using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-    {
-        using (StreamWriter sw = new StreamWriter(fs))
-        {
-            sw.WriteLine("zerkalo-sarke\r\nkniga-wigni\r\nstol-magida\r\ngorod-qalaqi\r\nsumka-chanta");
-        }
-    }
+    ////რუსულიდან ქართულზე
+    //path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\rustogeo.txt";
+    //using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+    //{
+    //    using (StreamWriter sw = new StreamWriter(fs))
+    //    {
+    //        sw.WriteLine("zerkalo-sarke\r\nkniga-wigni\r\nstol-magida\r\ngorod-qalaqi\r\nsumka-chanta");
+    //    }
+    //}
 
 
     string from = "", to = "";
@@ -245,7 +245,7 @@ void Translator()
                     to = "eng";
                     break;
                 case "2":
-                    path += @"\engtogeo.txt";
+                    path += @"\geotoeng.txt";
                     from = "eng";
                     to = "geo";
                     break;
@@ -255,7 +255,7 @@ void Translator()
                     to = "rus";
                     break;
                 case "4":
-                    path += @"\rustogeo.txt";
+                    path += @"\geotorus.txt";
                     from = "rus";
                     to = "geo";
                     break;
@@ -283,12 +283,30 @@ void Translator()
                 string line;
                 while ((line = sr.ReadLine()) != null) //ვამოწმებთ ფაილში ყველა ხაზს სანამ ცარიელი არ შეხვდება
                 {
-                    if (text == line.Split("-")[0]) //ვამოწმებთ მომხმარებლის მიერ შეყვანილი სიტყვა არის თუ არა ლექსიკონში
+                    if (from == "geo")
                     {
-                        Console.WriteLine($"translated text: {line.Split("-")[1]}"); //გამოგვაქვს გადათარგმნილი სიტყვა
-                        notranslation = false;
-                        break;
+                        if (text == line.Split("-")[0]) //ვამოწმებთ მომხმარებლის მიერ შეყვანილი სიტყვა არის თუ არა ლექსიკონში
+                        {
+                            Console.WriteLine($"translated text: {line.Split("-")[1]}"); //გამოგვაქვს გადათარგმნილი სიტყვა
+                            notranslation = false;
+                            break;
+                        }
                     }
+                    else
+                    {
+                        if (text == line.Split("-")[1]) //ვამოწმებთ მომხმარებლის მიერ შეყვანილი სიტყვა არის თუ არა ლექსიკონში
+                        {
+                            Console.WriteLine($"translated text: {line.Split("-")[0]}"); //გამოგვაქვს გადათარგმნილი სიტყვა
+                            notranslation = false;
+                            break;
+                        }
+                    }
+                    //if (text == line.Split("-")[0]) //ვამოწმებთ მომხმარებლის მიერ შეყვანილი სიტყვა არის თუ არა ლექსიკონში
+                    //{
+                    //    Console.WriteLine($"translated text: {line.Split("-")[1]}"); //გამოგვაქვს გადათარგმნილი სიტყვა
+                    //    notranslation = false;
+                    //    break;
+                    //}
                 }
             }
             if (notranslation) //თუ თარგმანი ვერ ვიპოვეთ
@@ -297,14 +315,22 @@ void Translator()
                 string translation = Console.ReadLine();
                 using (StreamWriter sw = new StreamWriter(path, true))
                 {
-                    sw.WriteLine($"{text}-{translation}"); //მომხმარებელი თავად ამატებს სიტყვის თარგმანს
+                    if (from == "geo")
+                    {
+                        sw.WriteLine($"{text}-{translation}"); //მომხმარებელი თავად ამატებს სიტყვის თარგმანს
+                    }
+                    else
+                    {
+                        sw.WriteLine($"{translation}-{text}"); //მომხმარებელი თავად ამატებს სიტყვის თარგმანს
+                    }
+                    //sw.WriteLine($"{text}-{translation}"); //მომხმარებელი თავად ამატებს სიტყვის თარგმანს
                 }
 
-                path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $@"\{to}to{from}.txt";
-                using (StreamWriter sw = new StreamWriter(path, true))
-                {
-                    sw.WriteLine($"{translation}-{text}");// ასევე ამ სიტყვას ვამატებთ მეორე ლექსიკონში
-                }
+                //path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $@"\{to}to{from}.txt";
+                //using (StreamWriter sw = new StreamWriter(path, true))
+                //{
+                //    sw.WriteLine($"{translation}-{text}");// ასევე ამ სიტყვას ვამატებთ მეორე ლექსიკონში
+                //}
                 Console.WriteLine("translation added!");
 
             }
@@ -350,7 +376,7 @@ void Atm()
             }
             else
             {
-                //int balance = new Random().Next(500, 10000);
+                //int balance = 0;
                 Console.Write("enter balance: ");
                 int balance = int.Parse(Console.ReadLine());
                 using (StreamWriter sw = new StreamWriter(path)) //ვქმნით მისი სახელის ფაილს
