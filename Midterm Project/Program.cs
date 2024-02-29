@@ -117,15 +117,33 @@ void GuessNumber()
 #region hangman game
 void Hangman()
 {
+    Dictionary<string, string> dic = new Dictionary<string, string>()
+    {
+        {"computer","an electronic device that manipulates information, or data." },
+        {"laptop","a personal computer that can be easily moved and used in a variety of locations." },
+        {"water","the liquid that makes life on Earth possible." },
+        {"dog","a domestic mammal of the family Canidae and the order Carnivora." },
+        {"cat","a furry animal that has a long tail and sharp claws." },
+        {"plant","a living thing that grows in the earth and has a stem, leaves, and roots." },
+        {"guitar","a flat-bodied stringed instrument with a long fretted neck and usually six strings played with a pick or with the fingers." },
+        {"program","a set of instructions that a computer follows in order to perform a particular task." },
+        {"child","a human being between the stages of birth and puberty, or between the developmental period of infancy and puberty." },
+        {"book","a number of pieces of paper, usually with words printed on them, which are fastened together and fixed inside a cover of stronger paper or cardboard." },
+
+    };
     string[] strings = { "computer", "laptop", "water", "dog", "cat", "plant", "guitar", "program", "child", "book" }; //ვქმნით სიტყვების მასივს თამაშისთვის
     string word = strings[new Random().Next(0, strings.Length)]; //ვირჩევთ მასივიდან შემთხვევით სიტყვას თამაშის დასაწყებად
-    Console.Write("enter maximum number of attempts: ");
-    int attempts; 
+
+    //Console.Write("enter maximum number of attempts: ");
+    //int attempts; 
     //მომხმარებელი თავად ირჩევს წინასწარ თუ რამდენი მცდელობა ექნება
-    while (!int.TryParse(Console.ReadLine(), out attempts) || attempts <= 0) //უნდა იყოს ინტ და დადებითი რიცხვი
-    {
-        Console.Write("enter correct number: ");
-    }
+    //while (!int.TryParse(Console.ReadLine(), out attempts) || attempts <= 0) //უნდა იყოს ინტ და დადებითი რიცხვი
+    //{
+    //    Console.Write("enter correct number: ");
+    //}
+
+    int attempts = word.Length + 1;
+    Console.WriteLine($"Hint: {dic[word]}\nyou have {attempts} attempts. good luck!");
 
     string answer = "";
     for (int i = 0; i < word.Length; i++)
